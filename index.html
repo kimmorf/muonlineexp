@@ -1,0 +1,770 @@
+
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<meta charset="utf-8">
+		<title>EXP Calculator</title>
+		<!-- BOOTSTRAP CSS -->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+		<!-- BOOTSTRAP SCRIPTS -->
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+
+		<!-- MY STYLE -->
+		<style>
+			@media (max-width: 991.98px) {
+			    .container {
+			        min-width: 100%;   
+
+			    }
+			}
+			input[readonly] {
+				background-color: white !important;
+			}
+			.settings, 
+			.results {
+				background-color: rgba(0,0,0,0.01);
+				height: 640px;
+
+			}
+			.clear_div{
+				position: absolute;
+				bottom: 25px;
+				left: 0;
+			}
+			input[type=radio]:checked + label {
+				font-weight: bold;
+				
+			}
+			div.settings label {
+				margin-bottom: 3px;
+				margin-left: 4px;
+			}
+			div.results label {
+				margin-bottom: 3px;
+			}
+		</style>
+
+		<script>
+			// NORMAL EXP TABLE
+			let exp_table_normal = [100,340,640,1000,1420,1900,2440,3040,3700,4420,5200,6040,6940,7900,8920,10000,11140,12340,13600,14920,16300,17740,19240,20800,22420,24100,25840,27640,29500,31420,33400,35440,37540,39700,41920,44200,46540,48940,51400,53920,56500,59140,61840,64600,67420,70300,73240,76240,79300,82420,85600,88840,92140,95500,98920,102400,105940,109540,113200,116920,120700,124540,128440,132400,136420,140500,144640,148840,153100,157420,161800,166240,170740,175300,179920,184600,189340,194140,199000,203920,208900,213940,219040,224200,229420,234700,240040,245440,250900,256420,262000,267640,273340,279100,284920,290800,296740,302740,308800,314920,321100,327340,333640,340000,346420,352900,359440,366040,372700,379420,386200,393040,399940,406900,413920,421000,428140,435340,442600,449920,457300,464740,472240,479800,487420,495100,502840,510640,518500,526420,534400,542440,550540,558700,566920,575200,583540,591940,600400,608920,617500,626140,634840,643600,652420,661300,670240,679240,688300,697420,706600,715840,725140,734500,743920,753400,762940,772540,782200,791920,801700,811540,821440,831400,841420,851500,861640,871840,882100,892420,902800,913240,923740,934300,944920,955600,966340,977140,988000,998920,1009900,1020940,1032040,1043200,1054420,1065700,1077040,1088440,1099900,1111420,1123000,1134640,1146340,1158100,1169920,1181800,1193740,1205740,1217800,1229920,1242100,1254340,1266640,1279000,1291420,1303900,1316440,1329040,1341700,1354420,1367200,1380040,1392940,1405900,1418920,1432000,1445140,1458340,1471600,1484920,1498300,1511740,1525240,1538800,1552420,1566100,1579840,1593640,1607500,1621420,1635400,1649440,1663540,1677700,1691920,1706200,1720540,1734940,1749400,1763920,1778500,1793140,1807840,1822600,1837420,1852300,1867240,1882240,1897300,1912420,1927600,1942840,1958140,1973500,1988920,2014400,2053940,2099540,2151200,2208920,2272700,2342540,2418440,2500400,2588420,2682500,2782640,2888840,3001100,3119420,3243800,3374240,3510740,3653300,3801920,3956600,4117340,4284140,4457000,4635920,4820900,5011940,5209040,5412200,5621420,5836700,6058040,6285440,6518900,6758420,7004000,7255640,7513340,7777100,8046920,8322800,8604740,8892740,9186800,9486920,9793100,10105340,10423640,10748000,11078420,11414900,11757440,12106040,12460700,12821420,13188200,13561040,13939940,14324900,14715920,15113000,15516140,15925340,16340600,16761920,17189300,17622740,18062240,18507800,18959420,19417100,19880840,20350640,20826500,21308420,21796400,22290440,22790540,23296700,23808920,24327200,24851540,25381940,25918400,26460920,27009500,27564140,28124840,28691600,29264420,29843300,30428240,31019240,31616300,32219420,32828600,33443840,34065140,34692500,35325920,35965400,36610940,37262540,37920200,38583920,39253700,39929540,40611440,41299400,41993420,42693500,43399640,44111840,44830100,45554420,46284800,47021240,47763740,48512300,49266920,50027600,50794340,51567140,52346000,53130920,53921900,54718940,55522040,56331200,57146420,57967700,58795040,59628440,60467900,61313420,62165000,63022640,63886340,64756100,65631920,66513800,67401740,68295740,69195800]
+
+			// MASTER EXP TABLE
+			let exp_table_master = [35507050,35966170,36428320,36893500,37361710,37832950,38307220,38784520,39264850,39748210,40234600,40724020,41216470,41711950,42210460,42712000,43216570,43724170,44234800,44748460,45265150,45784870,46307620,46833400,47362210,47894050,48428920,48966820,49507750,50051710,50598700,51148720,51701770,52257850,52816960,53379100,53944270,54512470,55083700,55657960,56235250,56815570,57398920,57985300,58574710,59167150,59762620,60361120,60962650,61567210,62174800,62785420,63399070,64015750,64635460,65258200,65883970,66512770,67144600,67779460,68417350,69058270,69702220,70349200,70999210,71652250,72308320,72967420,73629550,74294710,74962900,75634120,76308370,76985650,77665960,78349300,79035670,79725070,80417500,81112960,81811450,82512970,83217520,83925100,84635710,85349350,86066020,86785720,87508450,88234210,88963000,89694820,90429670,91167550,91908460,92652400,93399370,94149370,94902400,95658460,96417550,97179670,97944820,98713000,99484210,100258450,101035720,101816020,102599350,103385710,104175100,104967520,105762970,106561450,107362960,108167500,108975070,109785670,110599300,111415960,112235650,113058370,113884120,114712900,115544710,116379550,117217420,118058320,118902250,119749210,120599200,121452220,122308270,123167350,124029460,124894600,125762770,126633970,127508200,128385460,129265750,130149070,131035420,131924800,132817210,133712650,134611120,135512620,136417150,137324710,138235300,139148920,140065570,140985250,141907960,142833700,143762470,144694270,145629100,146566960,147507850,148451770,149398720,150348700,151301710,152257750,153216820,154178920,155144050,156112210,157083400,158057620,159034870,160015150,160998460,161984800,162974170,163966570,164962000,165960460,166961950,167966470,168974020,169984600,170998210,172014850,173034520,174057220,175082950,176111710,177143500,178178320,179216170,180257050,181300960,182347900,183397870,184450870,185506900,186565960,187872912,189436811,191017444,192614961,194229519,195861273,197510382,199176999,200861287,202563401,204283503,206021750,207778306,209553332,211346990,213159442,214990855,216841389,218711214,220600492,222509394,224438083,226386731,228355504,230344572,232354110,234384282,236435265,238507229,240600349,242714798,244850751,247008383,249187870,251389392,253613122,255859241,258127929,260419364,262733727,265071200,267431964,269816202,272224099,274655837,277111602,279591580,282095957,284624920,287178656,289757356,292361207,294990400,297645126,300325575,303031942,305764417,308523195,311308471,314120438,316959295,319825236,322718459,325639162,328587545,331563805,334568144,337600763,340661864,343751646,346870317,350018078,353195134,356401691,359637953,362904129,366200426,369527052,372884215,376272126,379690996,383141033,386622452,390135464,393680283,397257122,400866198,404507724,408181917,411888994,415629174,419402673,423209712,427050510,430925287,434834266,438777667,442755714,446768631,450816641,454899969,459018842,463173485,467364125,471590991,475854311,480154314,484491231,488865291,493276726,497725771,502212655,506737613,511300881,515902693,520543283,525222890,529941751,534700103,539498185,544336238,549214500,554133214,559092619,564092960,569134478,574217420,579342026,584508546,589717222,594968304,600262037,605598671,610978454,616401635,621868467,627379197,632934081,638533368,644177315,649866173,655600198,661379646,667204771,673075832,678993086,684956792,690967208,697024595,703129212,709281322,715481186,721729068,728025229,734369935,740763452,747206042,753697976,760239517,766830936,773472500,780164478,786907140,793700758,800555603,807441946,814390061,821390222,828442704,835547779,929291134,1114664260,1309055310,1514468885,1733005216,1966760782,2217928942,2488750560,2781524643,3098608968,3442420732,3815437178,4220196250,4659297232,5135401403,5651232680,6209578282,6813289380,7465281760,8168536483,8926100555,9741087590,10616678484,11556122086,12562735878,13639906651,14791091186,16019816941,17329682741,18724359459,19024359459,19324359459,19624359459,19924359459,20224359459,20524359459,20824359459,21124359459,21424359459,21724359459,22024359459,22324359459,22624359459,22924359459,23224359459,23524359459,23824359459,24124359459,24424359459,24724359459,25024359459,25324359459,25624359459,25924359459,26224359459,26524359459,26824359459,27124359459,27424359459,27724359459,28024359459,28324359459,28624359459,28924359459,29224359459,29524359459,29824359459,30124359459,30424359459,30724359459,31024359459,31324359459,31624359459,31924359459,32224359459,32524359459,32824359459,33124359459,33424359459,33724359459,34024359459,34324359459,34624359459,34924359459,35224359459,35524359459,35824359459,36124359459,36424359459,36724359459,37024359459,37324359459,37624359459,37924359459,38224359459,38524359459,38824359459,39124359459,39424359459,39724359459,40024359459,40324359459,40624359459,40924359459,41224359459,41524359459,41824359459,42124359459,42424359459,42724359459,43024359459,43324359459,43624359459,43924359459,44224359459,44524359459,44824359459,45124359459,45424359459,45724359459,46024359459,46324359459,46624359459,46924359459,47224359459,47524359459,47824359459,48124359459,48424359459,48724359459,49024359459,49324359459,49624359459,49924359459,50224359459,50524359459,50824359459,51124359459,51424359459,51724359459,52024359459,52324359459,52624359459,52924359459,53224359459,53524359459,53824359459,54124359459,54424359459,54724359459,55024359459,55324359459,55624359459,55924359459,56224359459,56524359459,56824359459,57124359459,57424359459,57724359459,58024359459,58324359459,58624359459,58924359459,59224359459,59524359459,59824359459,60124359459,60424359459,60724359459,61024359459,61324359459,61624359459,61924359459,62224359459,62524359459,62824359459,63124359459,63424359459,63724359459,64024359459,64324359459,64624359459,64924359459,65224359459,65524359459,65824359459,66124359459,66424359459,66724359459,67024359459,67324359459,67624359459,67924359459,68224359459,68524359459,68824359459,69124359459,69424359459,69724359459,70024359459,70324359459,70624359459,70924359459,71224359459,71524359459,71824359459,72124359459,72424359459,72724359459,73024359459,73324359459,73624359459,73924359459,74224359459,74524359459,74824359459,75124359459,75424359459,75724359459,76024359459,76324359459,76624359459,76924359459,77224359459,77524359459,77824359459,78124359459,78424359459,78724359459,80224359459,81724359459,83224359459,84724359459,86224359459,87724359459,89224359459,90724359459,92224359459,93724359459,95224359459,96724359459,98224359459,99724359459,101224359459,102724359459,104224359459,105724359459,107224359459,108724359459,110224359459,111724359459,113224359459,114724359459,116224359459,117724359459,119224359459,120724359459,122224359459,123724359459,125224359459,126724359459,128224359459,129724359459,131224359459,132724359459,134224359459,135724359459,137224359459,138724359459,140224359459,141724359459,143224359459,144724359459,146224359459,147724359459,149224359459,150724359459,152224359459,153724359459,155224359459,156724359459,158224359459,159724359459,161224359459,162724359459,164224359459,165724359459,167224359459,168724359459,170224359459,171724359459,173224359459,174724359459,176224359459,177724359459,179224359459,180724359459,182224359459,183724359459,185224359459,186724359459,188224359459,189724359459,191224359459,192724359459,194224359459,195724359459,197224359459,198724359459,200224359459,201724359459,203224359459,204724359459,206224359459,207724359459,209224359459,210724359459,212224359459,213724359459,215224359459,216724359459,218224359459,219724359459,221224359459,222724359459,224224359459,225724359459,227224359459,228724359459,230224359459,231724359459,233224359459,234724359459,236224359459,237724359459,239224359459,240724359459,242224359459,243724359459,245224359459,246724359459,248224359459,249724359459,251224359459,252724359459,254224359459,255724359459,257224359459,258724359459,260224359459,261724359459,263224359459,264724359459,266224359459,267724359459,269224359459,270724359459,272224359459,273724359459,275224359459,276724359459,278224359459,279724359459,281224359459,282724359459,284224359459,285724359459,287224359459,288724359459,290224359459,291724359459,293224359459,294724359459,296224359459,297724359459,299224359459,300724359459,302224359459,303724359459,305224359459,306724359459,308224359459,309724359459,311224359459,312724359459,314224359459,315724359459,317224359459,318724359459,320224359459,321724359459,323224359459,324724359459,326224359459,327724359459,329224359459,330724359459,332224359459,333724359459,335224359459,336724359459,338224359459,339724359459,341224359459,342724359459,344224359459,345724359459,347224359459,348724359459,350224359459,351724359459,353224359459,354724359459,356224359459,357724359459,359224359459,360724359459,362224359459,363724359459,365224359459,366724359459,368224359459,369724359459,371224359459,372724359459,374224359459,375724359459,377224359459,378724359459,380224359459,381724359459,383224359459,384724359459,386224359459,387724359459,389224359459,390724359459,392224359459,393724359459,395224359459,396724359459,398224359459,399724359459,401224359459,402724359459,404224359459,405724359459,407224359459,408724359459,410224359459,411724359459,413224359459,414724359459,416224359459,417724359459,419224359459,420724359459,422224359459,423724359459,425224359459,426724359459,428224359459,429724359459,431224359459,432724359459,434224359459,435724359459,437224359459,438724359459,440224359459,441724359459,443224359459,444724359459,446224359459,447724359459,449224359459,450724359459,452224359459,453724359459,455224359459,456724359459,458224359459,459724359459,461224359459,462724359459,464224359459,465724359459,467224359459,468724359459,470224359459,471724359459,473224359459,474724359459,476224359459,477724359459,479224359459,480724359459,482224359459,483724359459,485224359459,486724359459,488224359459,489724359459,491224359459,492724359459,494224359459,495724359459,497224359459,498724359459,500224359459,501724359459,503224359459,504724359459,506224359459,507724359459,509224359459,510724359459,512224359459,513724359459,515224359459,516724359459,518224359459,519724359459,521224359459,522724359459,524224359459,525724359459,527224359459,528724359459,530224359459]
+		</script>
+	</head>
+	<body>
+		<div class="container-fluid py-3 bg-primary">
+			<div class="container">
+				<div class="row">
+					<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+					  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					    <span class="navbar-toggler-icon"></span>
+					  </button>
+					  <div class="collapse navbar-collapse" id="navbarNav">
+					    <ul class="navbar-nav">
+					      <li class="nav-item active">
+					        <a class="nav-link" href="#">EXP Calculator<span class="sr-only">(Current)</span></a>
+					      </li>
+					    </ul>
+					  </div>
+					</nav>
+				</div>
+			</div>
+		</div>
+
+		<!-- CONTENT -->
+		<div class="container mt-3"> 
+		  	<div class="row">
+		  		<!-- SETTINGS -->
+		  		<div class="col-lg-6 "> 
+		  			<div class="mb-3 border settings">
+		  				<form>
+		  					<h3 class="text-center">Settings</h3>
+		  					<fieldset>
+		  						<div class="container my-3">
+		  							<div class="row">
+		  								<div class="col">
+					  						<legend>Level type</legend>
+											<div class="form-check">
+												<input 
+													class="form-check-input"
+													type="radio"
+													name="level_type"
+													id="normal_level"
+													value="normal"
+													checked
+													onclick="removeError()">
+												<label class="form-check-label" for="normal_level">Normal (from 1 to 399)</label>
+											</div>
+											<div class="form-check">
+												<input 
+													class="form-check-input" 
+													type="radio"
+													name="level_type"
+													id="master_level"
+													value="master"
+													onclick="removeError()">
+												<label class="form-check-label" for="master_level">Master (from 400 to 1300)</label>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="container mt-3">
+									<div class="row">
+										<div class="col-12 form-group">
+											<label for="current_level"><b>Current level</b></label>
+											<input 
+												type="number"
+												class="form-control"
+												id="current_level"
+												min="1"
+												max="1299"
+												placeholder="E.g: 849"
+												onkeypress="pressEnter();removeError(this.id)">
+										</div>
+										<div class="col-12 form-group">
+											<label for="desired_level"><b>Desired level</b></label>
+											<input 
+												type="number"
+												class="form-control"
+												id="desired_level"
+												min="2"
+												max="1300"
+												placeholder="E.g: 1171"
+												onkeypress="pressEnter();removeError(this.id)">
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-12 form-group">
+											<label for="current_exp"><b>Current experience</b></label>
+											<input 
+												type="number"
+												class="form-control"
+												id="current_exp"
+												min="0"
+												max="530224359458"
+												step="100000"
+												placeholder="E.g: 24359459"
+												onkeypress="pressEnter();removeError(this.id)">
+										</div>
+										<div class="col-12 form-group">
+											<label for="exp_sec"><b>Experience per second</b></label>
+											<input 
+												type="number"
+												class="form-control"
+												id="exp_sec"
+												min="1"
+												max="999999999999"
+												step="10000"
+												placeholder="E.g: 75000"
+												onkeypress="pressEnter();removeError(this.id)">
+
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-12 form-group">
+											<label for="hours_day"><b>Hours played per day</b></label>
+											<input 
+												type="number"
+												class="form-control"
+												id="hours_day"
+												min="1"
+												max="24"
+												placeholder="E.g: 12"
+												onkeypress="pressEnter();removeError(this.id)" >
+										</div>
+										<div class="d-flex justify-content-center col-6 align-self-center mt-3">
+											<button type="button" class="btn btn-primary w-100" id="" onclick="result()">Submit</button>
+										</div>
+										<div class="d-flex justify-content-center col-6 align-self-center mt-3">
+											<button type="button" class="btn btn-primary w-100" id="" onclick="simulate()">Simulate time</button>
+										</div>
+									</div>
+								</div>
+							</fieldset>
+		  				</form>
+		  			</div>
+		  		</div>
+		  		<!-- RESULTS -->
+		  		<div class="col-lg-6"> 
+		  			<div class="border results">
+		  				<form>
+		  					<h3 class="text-center">Results</h3>
+		  					<fieldset>
+		  						<div class="container mt-3">
+		  							<div id="results_default" style="display: block;">
+										<div class="row justify-content-center">
+											<div class="col-8 form-group">
+												<label class="d-block text-center" for="exp_needed"><b>Total experience you need</b></label>
+												<input type="text" class="form-control text-center" id="exp_needed" readOnly>
+											</div>
+										</div>
+										<div class="row justify-content-center">
+											<div class="col-8 form-group">
+												<label class="d-block text-center" for="time_needed"><b>Total time you need</b></label>
+												<input type="text" class="form-control text-center" id="time_needed" readOnly>
+											</div>
+										</div>
+										
+										<div class="row mt-4">
+											<div class="col">
+												<fieldset>
+													<legend class="text-center">Time analysis</legend>
+													<p id="time_analyzis" class="px-3 text-justify">
+														Let me analyze how long it will take to you reach your desired level based on your played hours per day.
+													</p>
+												</fieldset>
+											</div>
+										</div>
+									</div>
+									<div id="results_time" style="display: none;">
+										<div class="row justify-content-center">
+											<div class="col-8 form-group">
+												<label class="d-block text-center" for="final_exp"><b>Total experience you'll get</b></label>
+												<input type="text" class="form-control text-center" id="final_exp" readOnly>
+											</div>
+										</div>
+										<div class="row justify-content-center">
+											<div class="col-8 form-group">
+												<label class="d-block text-center" for="final_level"><b>Your final level</b></label>
+												<input type="text" class="form-control text-center" id="final_level" readOnly>
+											</div>
+										</div>
+
+									</div>
+									<div class="">
+										
+									</div>
+									<div class="row">
+										<div class="col d-flex justify-content-center clear_div">
+											<button type="button" id="clear_all" class="btn btn-primary w-50" onclick="clearAll()">Clear</button>
+										</div>
+									</div>
+								</div>
+		  					</fieldset>
+		  				</form>
+		  			</div>
+		  		</div>
+
+
+		  	</div> <!-- END ROW CONTENT-->
+		</div> <!-- END CONTAINER CONTENT-->
+
+		<!-- MODAL DE ERRO -->
+		<div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="modal_title" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="" id="modal_title"></h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <span id="modal_text"></span>
+		        <span id="modal_date" style="display: block;">
+		        	<form>
+		        	<div class="container mt-3">
+						<div class="row">
+							<div class="col-4 form-group">
+								<label for="current_level"><b>Year</b></label>
+								<input 
+									type="number"
+									class="form-control"
+									id="years"
+									min="0"
+									max="100"
+									placeholder="E.g: 2"
+									onchange="removeSimulateError(this.id)">
+							</div>
+							<div class="col-4 form-group">
+								<label for="desired_level"><b>Month</b></label>
+								<input 
+									type="number"
+									class="form-control"
+									id="months"
+									min="0"
+									max="12"
+									placeholder="E.g: 11"
+									onchange="removeSimulateError(this.id)">
+							</div>
+							<div class="col-4 form-group">
+								<label for="current_exp"><b>Day</b></label>
+								<input 
+									type="number"
+									class="form-control"
+									id="days"
+									min="0"
+									max="31"
+									placeholder="27"
+									onchange="removeSimulateError(this.id)">
+							</div>
+							<div class="col-4 form-group">
+								<label for="exp_sec"><b>Hour</b></label>
+								<input 
+									type="number"
+									class="form-control"
+									id="hours"
+									min="0"
+									max="23"
+									placeholder="E.g: 19"
+									onchange="removeSimulateError(this.id)">
+
+							</div>
+							<div class="col-4 form-group">
+								<label for="hours_day"><b>Minute</b></label>
+								<input 
+									type="number"
+									class="form-control"
+									id="minutes"
+									min="0"
+									max="59"
+									placeholder="E.g: 57"
+									onchange="removeSimulateError(this.id)">
+							</div>
+							<div class="col-4 form-group">
+								<label for="hours_day"><b>Second</b></label>
+								<input 
+									type="number"
+									class="form-control"
+									id="seconds"
+									min="0"
+									max="59"
+									placeholder="E.g: 41"
+									onchange="removeSimulateError(this.id)"
+									required>
+							</div>
+						</div>
+					</div>	
+					</form>
+		        </span>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="" id="modal_button" style="display: block;"></button>
+		         <button type="button" class="" id="modal_submit" style="display: none;"></button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	
+
+		<script>
+			// -------------------
+			// ABRE O MODAL DO TEMPO ESTIMADO E FAZ CHECAGEM DOS CAMPOS ANTERIORES
+			function simulate() {
+				mode = "simulated"
+				normalInitialLevel = parseInt(currentLevel.value)-1
+				normalFinalLevel = parseInt(desiredLevel.value)-2
+				masterInitialLevel = parseInt(currentLevel.value)-400
+				masterFinalLevel = parseInt(desiredLevel.value)-401	
+				if (checkFieldsNormal(normalInitialLevel, masterInitialLevel)){
+					modalText.style.display = "none"
+					modalDate.style.display = "block"
+					modalTitle.className = "modal-title text-primary"
+					modalTitle.innerHTML = "Simulate by time instead."
+					modalSubmit.className = "btn btn-primary"
+					modalSubmit.setAttribute('onclick','submitSimulate()')
+					modalSubmit.innerHTML = "Submit"
+					modalButton.style.display = "none"
+					modalSubmit.style.display = "block"
+					hoursDay.style.background = notrequired
+					currentExp.style.background = notrequired
+					desiredLevel.style.background = notrequired
+					$("#modal1").modal("show")
+				}
+			}
+			// -------------------
+			// MOSTRA O RESULTADO DO TEMPO ESTIMADO
+			function submitSimulate() {
+				let finalLevel = parseInt(currentLevel.value)
+				let finalExp = null
+				let temporario = null
+				mode = "simulated"
+				normalInitialLevel = parseInt(currentLevel.value)-1
+				masterInitialLevel = parseInt(currentLevel.value)-400
+				if( checkFieldsSimulate() ) {
+					modeNormal.style.display = "none"
+					modeSimulated.style.display = "block"
+					$("#modal1").modal("hide")
+					totalTime = totalTimeSimulated()
+
+					finalExp = (totalTime*expSec.value)+1
+					console.log(finalExp)
+					
+					if (levelNormal.checked) {
+						for (let p = normalInitialLevel; p <= (exp_table_normal.length-1); p++ ) {
+							temporario += exp_table_normal[p]
+							if (temporario >= finalExp) {
+								document.getElementById("final_level").value = finalLevel
+								document.getElementById("final_exp").value = finalExp-1
+								break
+							} else {
+								document.getElementById("final_level").value = 400
+								document.getElementById("final_exp").value = exp_table_normal[p]
+							}
+							finalLevel += 1
+							
+						} 
+					}
+					if (levelMaster.checked) {
+						for (let j = masterInitialLevel; j <= (exp_table_master.length-1); j++ ) {
+							temporario += exp_table_master[j]
+							if (temporario >= finalExp) {
+								document.getElementById("final_level").value = finalLevel+1
+								document.getElementById("final_exp").value = finalExp-1
+								break
+							} else {
+								document.getElementById("final_level").value = 1300
+								document.getElementById("final_exp").value = exp_table_master[j]
+							}
+							finalLevel += 1
+						} 
+					}
+				}
+
+			// -------------------
+			// CALCULA O TEMPO TOTAL SOMANDO TODOS OS CAMPOS	
+			}
+			function totalTimeSimulated() {
+				let yearsToSec = sYear.value*31536000
+				let monthsToSec = sMonth.value*2628000
+				let daysToSec = sDay.value*86400
+				let hoursToSec = sHour.value*3600
+				let minutesToSec = sMinute.value*60
+				let totalSeconds = parseInt(yearsToSec)+parseInt(monthsToSec)+parseInt(daysToSec)+parseInt(hoursToSec)+parseInt(minutesToSec)+parseInt(sSecond.value)
+				return totalSeconds
+			}
+
+			// -------------------
+			// CHECAR SE OS CAMPOS DE DATA SÃO VÁLIDOS
+			function checkFieldsSimulate(normalInitialLevel, masterInitialLevel) {
+				simulateError = false
+				for ( let z = 0; z < checkfieldsSimulated.length; z++ ) {
+					if ( checkfieldsSimulated[z].value == "") {
+						checkfieldsSimulated[z].value = 0
+					}
+					if ( (parseInt(checkfieldsSimulated[z].value) < parseInt(checkfieldsSimulated[z].min) || parseInt(checkfieldsSimulated[z].value) > parseInt(checkfieldsSimulated[z].max)) && checkfieldsSimulated[z] != sSecond  ) {
+						checkfieldsSimulated[z].style.backgroundColor = errorbackground
+						simulateError = true
+					}
+					if ( checkfieldsSimulated[z] == sSecond && checkfieldsSimulated[z].value == ""  ) {
+						checkfieldsSimulated[z].style.backgroundColor = errorbackground
+						simulateError = true
+					}
+				} // fim do for
+				if ( (sSecond.value == "" || parseInt(sSecond.value) < 1 || parseInt(sSecond.value) > 59) && (totalTimeSimulated()-sSecond.value) == 0 ) {
+					sSecond.style.backgroundColor = errorbackground
+					simulateError = true
+				}
+
+				if (simulateError == true){
+					return false
+				} else {
+					return true
+				}
+
+			}
+			// -------------------
+			// REMOVE OS ERROS AO MUDAR UM CAMPO
+			function removeSimulateError(id) {
+				if (simulateError == true) {
+					document.getElementById(id).style.background = "white"
+				}
+			}
+			// -------------------
+			// EXIBIR RESULTADOS
+			function result() {
+				mode = "normal"
+				normalInitialLevel = parseInt(currentLevel.value)-1
+				normalFinalLevel = parseInt(desiredLevel.value)-2
+				masterInitialLevel = parseInt(currentLevel.value)-400
+				masterFinalLevel = parseInt(desiredLevel.value)-401	
+				let tempoYY = null
+				let tempoDD = null
+				let tempoH = null
+				let tempoM = null
+				let tempoS = null
+				let yy = null
+				let dd = null
+				let h = null
+				let m = null
+
+				if (checkFieldsNormal(normalInitialLevel, masterInitialLevel)){
+					modeNormal.style.display = "block"
+					modeSimulated.style.display = "none"
+
+					totalEXP(normalInitialLevel, normalFinalLevel, masterInitialLevel, masterFinalLevel)
+
+					totalTime = totalExp/Math.floor(expSec.value)
+					tempoYY = totalTime/31536000
+					tempoMM = (tempoYY-Math.floor(tempoYY))*12
+					tempoDD = (tempoMM-Math.floor(tempoMM))*30.41666666667
+					tempoH = (tempoDD-Math.floor(tempoDD))*24
+					tempoM = (tempoH-Math.floor(tempoH))*60
+					tempoS = (tempoM-Math.floor(tempoM))*60
+					yy = Math.floor(tempoYY)
+					mm = Math.floor(tempoMM)
+					dd = Math.floor(tempoDD)
+					h = Math.floor(tempoH)
+					m = Math.floor(tempoM)
+					s = Math.floor(tempoS)
+
+					if (s <= 1 && m < 1 && h < 1 && dd < 1 && mm < 1 && yy < 1) {
+						timeNeeded.value = `1S`
+						document.getElementById("time_analyzis").innerHTML = `Well, you only have to kill one monster and you are ready to go.`
+					} else {
+						if (yy >= 1){
+							timeNeeded.value = `${yy}Y, ${mm}M, ${dd}D, ${h}H, ${m}MIN ${s}S`
+						} else if (mm >= 1) {
+							timeNeeded.value = `${mm}M, ${dd}D, ${h}H, ${m}MIN ${s}S`
+						} else if (dd >= 1) {
+							timeNeeded.value = `${dd}D, ${h}H, ${m}MIN ${s}S`
+						} else if (h >= 1) {
+							timeNeeded.value = `${h}H, ${m}MIN ${s}S`
+						} else if (m >= 1) {
+							timeNeeded.value = `${m}MIN ${s}S`
+						} else if (s >= 1) {
+							timeNeeded.value = `${s}S`
+						}
+						tempoYYY = (24*(totalTime/31536000)/hoursDay.value)
+						tempoMMM = (tempoYYY-Math.floor(tempoYYY))*12
+						tempoDDD = (tempoMMM-Math.floor(tempoMMM))*30.41666666667
+						tempoHH = (tempoDDD-Math.floor(tempoDDD))*24
+						tempoMM = (tempoHH-Math.floor(tempoHH))*60
+						tempoSS = (tempoMM-Math.floor(tempoMM))*60
+						yyy = Math.floor(tempoYYY)
+						mmm = Math.floor(tempoMMM)
+						ddd = Math.floor(tempoDDD)
+						hh = Math.floor(tempoHH)
+						mm = Math.floor(tempoMM)
+						ss = Math.floor(tempoSS)
+						if (yyy >= 1){
+							document.getElementById("time_analyzis").innerHTML = `If you play ${hoursDay.value}H per day, you will take ${yyy}Y, ${mmm}M, ${ddd}D, ${hh}H, ${mm}MIN ${ss}S to reach level ${desiredLevel.value}. I hope you don't get bored.` 
+						} else if (mmm >= 1) {
+							document.getElementById("time_analyzis").innerHTML = `If you play ${hoursDay.value}H per day, you will take ${mmm}M, ${ddd}D, ${hh}H, ${mm}MIN ${ss}S to reach level ${desiredLevel.value}. Urgh, it will take a while.`
+						} else if (ddd >= 1) {
+							document.getElementById("time_analyzis").innerHTML = `If you play ${hoursDay.value}H per day, you will take ${ddd}D, ${hh}H, ${mm}MIN ${ss}S to reach level ${desiredLevel.value}. A few days won't hurt, right? `
+						} else if (hh >= 1 && h >=1) {
+							document.getElementById("time_analyzis").innerHTML = `If you play ${hoursDay.value}H per day, you will take ${hh}H, ${mm}MIN ${ss}S to reach level ${desiredLevel.value}. Try to do something else, time flies.`
+						} else if (mm >= 1) {
+							document.getElementById("time_analyzis").innerHTML = `If you play ${hoursDay.value}H per day, you will take ${m}MIN, ${s}S to reach level ${desiredLevel.value}. You're almost there, keep going!`
+						} else if (ss >= 1) {
+							document.getElementById("time_analyzis").innerHTML = `If you play ${hoursDay.value}H per day, you will take ${s}S to reach level ${desiredLevel.value}. The time you're reading this, you reached your desired level already.`
+						}
+					}
+				}		
+			}
+			// -------------------
+			// CALCULA QUANTO DE EXP PRECISA
+			function totalEXP(normalInitialLevel, normalFinalLevel, masterInitialLevel, masterFinalLevel) {
+				totalExp = 0
+				if(levelMaster.checked) {
+					for(let x = masterInitialLevel; x <= masterFinalLevel; x++){
+						totalExp += exp_table_master[x]
+					}
+				}
+				else {
+					for(let z = normalInitialLevel; z <= normalFinalLevel; z++){
+						totalExp += exp_table_normal[z]
+					}
+				}
+				totalExp -= currentExp.value
+				expNeeded.value = totalExp
+			}
+			// -------------------
+			// CHECAR SE OS CAMPOS SÃO VÁLIDOS
+			function checkFieldsNormal(normalInitialLevel, masterInitialLevel){
+				modalText.style.display = "block"
+				modalDate.style.display = "none"
+				modalSubmit.style.display = "none"
+				modalButton.style.display = "block"
+				let errorType = null
+				for (let i = 0; i < checkfields.length; i++){
+					if (mode == "normal" && checkfields[i] == currentLevel && parseInt(checkfields[i].value) >= parseInt(checkfields[i+1].value)){
+						errorType = "currentdesired"
+						applyError(checkfields[i], errorType,normalInitialLevel, masterInitialLevel, i)
+						return false
+					}
+					else if ((checkfields[i] == currentLevel || checkfields[i] == desiredLevel) && ( (levelNormal.checked && parseInt(checkfields[i].value) > 400 ) || (levelMaster.checked && parseInt(checkfields[i].value) < 400 ) )){
+						if (levelMaster.checked){
+							errorType = "master"
+							applyError(checkfields[i], errorType,normalInitialLevel, masterInitialLevel, i)
+							return false
+						} 
+							errorType = "normal"
+							applyError(checkfields[i], errorType,normalInitialLevel, masterInitialLevel, i)
+							return false
+					} 
+					else if (mode == "normal" && (parseInt(checkfields[i].value) < parseInt(checkfields[i].min) || checkfields[i].value == "" || parseInt(checkfields[i].value) > parseInt(checkfields[i].max)) && (checkfields[i] != currentExp)){
+						errorType = "minmax"
+						applyError(checkfields[i], errorType,normalInitialLevel, masterInitialLevel, i)
+						return false
+					} 
+					else if (mode == "simulated" && checkfields[i] != desiredLevel && (parseInt(checkfields[i].value) < parseInt(checkfields[i].min) || checkfields[i].value == "" || parseInt(checkfields[i].value) > parseInt(checkfields[i].max)) && (checkfields[i] != currentExp) && (checkfields[i] != hoursDay)){
+						errorType = "minmax"
+						applyError(checkfields[i], errorType,normalInitialLevel, masterInitialLevel, i)
+						return false
+					} 
+					else if (checkfields[i] == currentExp && checkfields[i].value >= checkCurrentExp(normalInitialLevel, masterInitialLevel) || checkfields[i].value < checkfields[i].min){
+						currentExp.value = 0
+					} 
+				}
+				return true
+			}
+
+			// -------------------
+			// CHECA QUAL A EXP MÁXIMA QUE PODE TER NO NÍVELA TUAL
+			function checkCurrentExp(normalInitialLevel, masterInitialLevel){
+				let verifiedExp = null
+				if (levelMaster.checked === true) { // Checa se é master level e está abaixo de 400
+					verifiedExp = exp_table_master[masterInitialLevel]
+				} 
+				else if (levelNormal.checked === true) { // Checa se é normal level e está acima ou igual a 400
+					verifiedExp = exp_table_normal[normalInitialLevel]	
+				}
+				return verifiedExp
+			}
+			// -------------------
+			// APLICA ERROS CASO OS CAMPOS NÃO FOREM VÁLIDOS
+			function applyError(id,errorType, normalInitialLevel, masterInitialLevel, i){
+				let errorMessage = ""
+				if ((errorType == "master" && id == currentLevel) || (errorType == "normal" && id == currentLevel)){
+					errorMessage=`Level <b>${currentLevel.value}</b> is not a <b>${errorType}</b> level.`
+					checkError = 1
+				} 
+				else if ((errorType == "master" && id == desiredLevel) || (errorType == "normal" && id == desiredLevel)){
+					errorMessage=`Level <b>${desiredLevel.value}</b> is not a <b>${errorType}</b> level.`
+					checkError = 1
+				}  
+				else if (errorType == "currentdesired") {
+					errorMessage=`Your desired level must be greater than your current level.`
+					checkError2 = 1
+
+				} 
+				else if (errorType == "minmax") {
+					errorMessage=`Insert a valid number.<br><i>Min: <b>${id.min}</b> Max: <b>${id.max}</b>`
+				}
+				modalTitle.className = "modal-title text-danger"
+				modalTitle.innerHTML = "Something is wrong..."
+				modalText.innerHTML =  errorMessage
+				modalButton.className = "btn btn-danger"
+				modalButton.setAttribute('onclick',`focusError(${i})`)
+				modalButton.innerHTML = "Close"
+				$("#modal1").modal("show")
+				if (checkError2 == 1) {
+					currentLevel.style.background = errorbackground
+					desiredLevel.style.background = errorbackground
+				} 
+					id.style.background = errorbackground
+			}
+			function focusError(i){
+				$("#modal1").modal("hide")
+				checkfields[i].focus();
+			}
+			// -------------------
+			// REMOVER ESTILO DE ERROS
+			let checkError = 0
+			let checkError2 = 0
+			function removeError(id) {
+				if (id != null){
+					document.getElementById(id).style.background = "white"
+				}
+				if (checkError2 == 1){ // LIMPA O ESTILO DE ERRO AO MUDAR O DESIRED LEVEL OU CURRENT LEVEL
+					document.getElementById("current_level").style.background = "white"
+					document.getElementById("desired_level").style.background = "white"
+					checkError2 = 0
+				}
+				else if (checkError == 1){ 
+					document.getElementById("current_level").style.background = "white"
+					document.getElementById("desired_level").style.background = "white"
+					checkError = 0
+				}
+			}
+			// -------------------
+			// LIMPA TODOS OS CAMPOS
+			function clearAll() {
+				currentLevel.value = ""
+				desiredLevel.value = ""
+				currentExp.value = ""
+				expSec.value = ""
+				hoursDay.value = ""
+				expNeeded.value = ""
+				timeNeeded.value = ""
+				sYear.value = ""
+				sMonth.value = ""
+				sDay.value = ""
+				sHour.value = ""
+				sMinute.value = ""
+				sSecond.value = ""
+				currentLevel.style.background = "white"
+				desiredLevel.style.background = "white"
+				currentExp.style.background = "white"
+				expSec.style.background = "white"
+				hoursDay.style.background = "white"
+				sYear.style.background = "white"
+				sMonth.style.background = "white"
+				sDay.style.background = "white"
+				sHour.style.background = "white"
+				sMinute.style.background = "white"
+				sSecond.style.background = "white"
+				modeNormal.style.display = "block"
+				modeSimulated.style.display = "none"
+				document.getElementById("final_level").value = ""
+				document.getElementById("final_exp").value = ""
+				document.getElementById("time_analyzis").innerHTML = "Let me analyze how long it will take to you reach your desired level based on your played hours per day."
+			}
+			// -------------------
+			// VERIFICA SE A TECLA APERTADA FOI ENTER
+			function pressEnter(){
+				if (event.keyCode === 13) {
+					result();
+				}	
+  			}
+			// -------------------
+			// VARIÁVEIS
+			let modeNormal = document.getElementById("results_default")
+			let modeSimulated = document.getElementById("results_time")
+			let mode = "normal"
+
+			let normalInitialLevel = null
+			let normalFinalLevel = null
+			let masterInitialLevel = null
+			let masterFinalLevel = null
+
+			let totalExp = null
+			let totalTime = null
+
+			let simulateError = false
+			let sYear = document.getElementById("years")
+			let sMonth = document.getElementById("months")
+			let sDay = document.getElementById("days")
+			let sHour = document.getElementById("hours")
+			let sMinute = document.getElementById("minutes")
+			let sSecond = document.getElementById("seconds")
+
+			let modalTitle = document.getElementById("modal_title")
+			let modalText = document.getElementById("modal_text")
+			let modalButton = document.getElementById("modal_button")
+			let modalSubmit = document.getElementById("modal_submit")
+			let modalDate = document.getElementById("modal_date")
+			let errorbackground = "rgba(255,0,0,0.3)"
+			let notrequired = "rgba(0,0,0,0.2)"
+
+			let levelNormal= document.getElementById("normal_level")
+			let levelMaster= document.getElementById("master_level")
+			let currentLevel = document.getElementById('current_level')
+			let desiredLevel = document.getElementById('desired_level')
+			let currentExp = document.getElementById('current_exp')
+			let expSec = document.getElementById('exp_sec')
+			let hoursDay = document.getElementById('hours_day')
+			let expNeeded = document.getElementById("exp_needed")
+			let timeNeeded = document.getElementById("time_needed")
+
+			let checkfields = [currentLevel, desiredLevel, currentExp, expSec, hoursDay]
+			let checkfieldsSimulated = [sYear, sMonth, sDay, sHour, sMinute, sSecond]	
+		</script>
+	<div style="text-align: right;position: fixed;z-index:9999999;bottom: 0;width: auto;right: 1%;cursor: pointer;line-height: 0;display:block !important;"><a title="Hosted on free web hosting 000webhost.com. Host your own website for FREE." target="_blank" href="https://www.000webhost.com/?utm_source=000webhostapp&utm_campaign=000_logo&utm_medium=website&utm_content=footer_img"><img src="https://cdn.000webhost.com/000webhost/logo/footer-powered-by-000webhost-white2.png" alt="www.000webhost.com"></a></div><script>function getCookie(t){for(var e=t+"=",n=decodeURIComponent(document.cookie).split(";"),o=0;o<n.length;o++){for(var i=n[o];" "==i.charAt(0);)i=i.substring(1);if(0==i.indexOf(e))return i.substring(e.length,i.length)}return""}getCookie("hostinger")&&(document.cookie="hostinger=;expires=Thu, 01 Jan 1970 00:00:01 GMT;",location.reload());var wordpressAdminBody=document.getElementsByClassName("wp-admin")[0],notification=document.getElementsByClassName("notice notice-success is-dismissible"),hostingerLogo=document.getElementsByClassName("hlogo"),mainContent=document.getElementsByClassName("notice_content")[0];if(null!=wordpressAdminBody&&notification.length>0&&null!=mainContent){var googleFont=document.createElement("link");googleFontHref=document.createAttribute("href"),googleFontRel=document.createAttribute("rel"),googleFontHref.value="https://fonts.googleapis.com/css?family=Roboto:300,400,600,700",googleFontRel.value="stylesheet",googleFont.setAttributeNode(googleFontHref),googleFont.setAttributeNode(googleFontRel);var css="@media only screen and (max-width: 576px) {#main_content {max-width: 320px !important;} #main_content h1 {font-size: 30px !important;} #main_content h2 {font-size: 40px !important; margin: 20px 0 !important;} #main_content p {font-size: 14px !important;} #main_content .content-wrapper {text-align: center !important;}} @media only screen and (max-width: 781px) {#main_content {margin: auto; justify-content: center; max-width: 445px;}} @media only screen and (max-width: 1325px) {.web-hosting-90-off-image-wrapper {position: absolute; max-width: 95% !important;} .notice_content {justify-content: center;} .web-hosting-90-off-image {opacity: 0.3;}} @media only screen and (min-width: 769px) {.notice_content {justify-content: space-between;} #main_content {margin-left: 5%; max-width: 445px;} .web-hosting-90-off-image-wrapper {position: absolute; display: flex; justify-content: center; width: 100%; }} .web-hosting-90-off-image {max-width: 90%;} .content-wrapper {min-height: 454px; display: flex; flex-direction: column; justify-content: center; z-index: 5} .notice_content {display: flex; align-items: center;} * {-webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;} .upgrade_button_red_sale{box-shadow: 0 2px 4px 0 rgba(255, 69, 70, 0.2); max-width: 350px; border: 0; border-radius: 3px; background-color: #ff4546 !important; padding: 15px 55px !important; font-family: 'Roboto', sans-serif; font-size: 16px; font-weight: 600; color: #ffffff;} .upgrade_button_red_sale:hover{color: #ffffff !important; background: #d10303 !important;}",style=document.createElement("style"),sheet=window.document.styleSheets[0];style.styleSheet?style.styleSheet.cssText=css:style.appendChild(document.createTextNode(css)),document.getElementsByTagName("head")[0].appendChild(style),document.getElementsByTagName("head")[0].appendChild(googleFont);var button=document.getElementsByClassName("upgrade_button_red")[0],link=button.parentElement;link.setAttribute("href","https://www.hostinger.com/hosting-starter-offer?utm_source=000webhost&utm_medium=panel&utm_campaign=000-wp"),link.innerHTML='<button class="upgrade_button_red_sale">Go for it</button>',(notification=notification[0]).setAttribute("style","padding-bottom: 0; padding-top: 5px; background-color: #040713; background-size: cover; background-repeat: no-repeat; color: #ffffff; border-left-color: #040713;"),notification.className="notice notice-error is-dismissible";var mainContentHolder=document.getElementById("main_content");mainContentHolder.setAttribute("style","padding: 0;"),hostingerLogo[0].remove();var h1Tag=notification.getElementsByTagName("H1")[0];h1Tag.className="000-h1",h1Tag.innerHTML="Black Friday Prices",h1Tag.setAttribute("style",'color: white; font-family: "Roboto", sans-serif; font-size: 22px; font-weight: 700; text-transform: uppercase;');var h2Tag=document.createElement("H2");h2Tag.innerHTML="Get 90% Off!",h2Tag.setAttribute("style",'color: white; margin: 10px 0 15px 0; font-family: "Roboto", sans-serif; font-size: 60px; font-weight: 700; line-height: 1;'),h1Tag.parentNode.insertBefore(h2Tag,h1Tag.nextSibling);var paragraph=notification.getElementsByTagName("p")[0];paragraph.innerHTML="Get Web Hosting for $0.99/month + SSL Certificate for FREE!",paragraph.setAttribute("style",'font-family: "Roboto", sans-serif; font-size: 16px; font-weight: 700; margin-bottom: 15px;');var list=notification.getElementsByTagName("UL")[0];list.remove();var org_html=mainContent.innerHTML,new_html='<div class="content-wrapper">'+mainContent.innerHTML+'</div><div class="web-hosting-90-off-image-wrapper"><img class="web-hosting-90-off-image" src="https://cdn.000webhost.com/000webhost/promotions/bf-2020-wp-inject-img.png"></div>';mainContent.innerHTML=new_html;var saleImage=mainContent.getElementsByClassName("web-hosting-90-off-image")[0]}</script></body>
+</html>
